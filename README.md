@@ -5,6 +5,10 @@ Includes code to generate tab delimited averaged readings sampled every (e.g.) m
 how to compensate for temperature. Also includes a flask server to get plots of current accumulated data from the output
 of the sampler process.
 
+![Example plot](loadcell_first17hours_4kg.png)
+
+
+
 Background: Load cells suck. The beekeepers have dropped them from the openhivescale project, preferring a much more
 mechanical system based on a foundary scale design. Load cells suffer from drift and temperature changes, but
 cheap ones can be had for cheap - so little investment for fun. Being a data scientist means I want to know how badly
