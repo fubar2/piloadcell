@@ -3,7 +3,8 @@ Python code for raspberry pi, load cell and hx711 converter
 
 Includes code to generate tab delimited averaged readings sampled every (e.g.) minute so we can evaluate drift and figure out
 how to compensate for temperature. Also includes a flask server to get plots of current accumulated data from the output
-of the sampler process.
+of the sampler process. A 17 hour continuous run on my study floor after adding a fixed 4kg weight as soon as the loadcell
+was tared to zero looks like this: 
 
 ![Example plot](loadcell_first17hours_4kg.png)
 
