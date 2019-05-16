@@ -21,5 +21,6 @@ the datasheet specs.
 * Similarly, the code to manage readings allows the hx711 to sleep most of the time to minimise on board thermal effects. Seems also to
 improve stability a lot.
 
-* Getting matplotlib to plot a pandas timestamp on the x axis was a frustrating exercise - at least partly because
-I'm using the raspbian versions of everything to make the project easier to test.
+* Getting matplotlib to plot a pandas UTC timestamp *as local time* on the x axis was a frustrating exercise - at least partly because
+I'm using the raspbian versions of everything to make the project easier to test so they are not the latest and not always quite the
+way the current documentation suggests. Whatever, finally figured it out....

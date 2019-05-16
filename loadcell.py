@@ -1,4 +1,8 @@
 #! /usr/bin/python3
+# sampler for a pi hx711/loadcell combination
+# ross lazarus me fecit May 2019
+# based on the hx711py example.py code.
+
 import time
 import sys
 
@@ -15,13 +19,13 @@ else:
     from emulated_hx711 import HX711
 
 def cleanAndExit():
-	# print("Cleaning up")
+    # print("Cleaning up")
 
-	if not EMULATE_HX711:
-		GPIO.cleanup()
-	if logdat:
-		lout.close()
-	sys.exit()
+    if not EMULATE_HX711:
+        GPIO.cleanup()
+    if logdat:
+        lout.close()
+    sys.exit()
 
 hx = HX711(5, 6)
 #hx.OFFSET = OFFSET
@@ -61,8 +65,8 @@ print("Tare done! Ready now...")
 #hx.tare_A()
 #hx.tare_B()
 if logdat:
-	lout = open(logfname,'w')
-	started = time.time()
+    lout = open(logfname,'w')
+    started = time.time()
 
 while True:
     try:

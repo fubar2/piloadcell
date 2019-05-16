@@ -1,3 +1,7 @@
+#! /usr/bin/python3
+# simple web server for data accumulated to date by loadcell.py writing
+# to loadcell.xls
+
 from flask import Flask, send_file, make_response
 from loadcellplotter import loadcellplot
 app = Flask(__name__)

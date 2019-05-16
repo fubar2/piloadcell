@@ -1,3 +1,7 @@
+#! /usr/bin/python3
+# stand alone plotter - currently just uses the growing output file
+# but can be used on historical files by editing
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
