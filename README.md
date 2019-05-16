@@ -9,13 +9,17 @@ of the sampler process.
 
 
 
-Background: Load cells suck. The beekeepers have dropped them from the openhivescale project, preferring a much more
+*Background:* Load cells suck. The beekeepers have dropped them from the openhivescale project, preferring a much more
 mechanical system based on a foundary scale design. Load cells suffer from drift and temperature changes, but
 cheap ones can be had for cheap - so little investment for fun. Being a data scientist means I want to know how badly
 they suck...so I grabbed some cheap 10kg load cells and hx711 converter boards from eGay, knowing I was in for a rough ride.
 Turns out they're not that bad...
 
-Lessons so far:
+*Requirements:* Built for python3.5 on raspbian 9 (Debian Stretch)
+Requires https://github.com/tatobari/hx711py and the current raspbian versions of flask, pandas, numpy, matplotlib
+dateutil and tzlocal installed
+
+*Lessons so far:*
 
 * Using these cheapo hx711, dropping the hx711 supply from 5v to 3.3v resulted in huge gains in stability. Go figure. Both are within
 the datasheet specs.
