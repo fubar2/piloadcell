@@ -16,7 +16,23 @@ from tzlocal import get_localzone
 
 tzl = get_localzone().zone
 mdates.rcParams['timezone'] = tzl
+trimci = 2.0
 
+def trimcl(df,nsd):
+    mene = df.mass.mean()
+    ci = df.mass.std()*2.0
+    ucl = mene + ci
+    lcl = mene - ci
+    notbig = df.mass < ucl
+    df2 = df[notbig]
+    notsmall = df2.mass > lcl
+    df2 = df2[notsmall]
+    nhi = sum(notbig==False)
+    nlo = sum(notsmall==False)
+    s = 'Trim +/- %.1f SD removed %d above %.2f and %d below %.2f\n' % (nsd,nhi,ucl,nlo,lcl)
+    s2 = '##Before trim:\n %s\nAfter trim:\n %s' % (df.describe(),df2.describe())
+    return(df2,s,s2)
+    
 if (len(sys.argv) > 1):
     iname = sys.argv[1]
     ifilename, ifile_extension = os.path.splitext(iname)
@@ -31,7 +47,9 @@ df.columns=["epoch","mass"]
 df['date'] = pd.to_datetime(df['epoch'],unit='s')
 df.set_index(df['date'],inplace=True)
 df = df.tz_localize(tz=tzl)
-
+if trimci:
+    df,note,descr = trimcl(df,trimci)
+print(descr)
 lastone = df.epoch[-1]
 lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
 
@@ -50,7 +68,12 @@ elif nrow > 100000:
     ms = 0.2
 plt.figure(figsize=(10,8))
 plt.plot(x, y, c='blue',linestyle='None', markersize = ms, marker='o')
-plt.title('%d Loadcell values, %s to %s' % (nrow,firsttime,lasttime))
+titl = '%d Loadcell values, %s to %s' % (nrow,firsttime,lasttime)
+if trimci:
+    plt.title(note,fontsize=14)
+    plt.suptitle(titl,fontsize=18, y=0.975)
+else:
+    plt.title(titl)
 plt.xlabel('Time (usually as month-day hour)')
 plt.ylabel('Reported Mass (g)')
 
