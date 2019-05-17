@@ -1,5 +1,5 @@
 # piloadcell
-Python code for raspberry pi, load cell and hx711 converter
+Python code for plotting weight over time using a raspberry pi zero w, 10kg load cell and hx711 converter
 
 Includes code to generate tab delimited averaged readings sampled every (e.g.) minute so we can evaluate drift and figure out
 how to compensate for temperature. Also includes a flask server to get plots of current accumulated data from the output
@@ -21,7 +21,7 @@ Being a data scientist means I want to know how badly they suck...so I grabbed s
 knowing I was in for a rough ride. Turns out they're not that bad...
 
 **Requirements:**
-Built for python3.5 on raspbian 9 (Debian Stretch).
+Built for python3.5 on raspbian 9 (Debian Stretch). Developed on a pi zero w - best $20 I ever spent.
 
 Requires https://github.com/tatobari/hx711py and the current raspbian versions of flask, pandas, numpy, matplotlib
 dateutil and tzlocal installed - e.g. sudo apt install python3-pandas. Code may work under other versions of these
@@ -39,4 +39,4 @@ improve stability - assertion not empirically tested or measured.
 
 * Getting matplotlib to plot a pandas UTC timestamp *as local time* on the x axis was a frustrating exercise - at least partly because
 I'm using the raspbian versions of everything to make the project easier to test so they are not the latest and not always quite the
-way the current documentation suggests. Whatever, finally figured it out....
+way the current documentation suggests. Whatever, finally figured it out....although it's probably much fuglier than needed.

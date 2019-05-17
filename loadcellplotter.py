@@ -8,25 +8,24 @@ import io
 import datetime
 from dateutil import tz
 from tzlocal import get_localzone
+import time
 
 tzl = get_localzone().zone
 
 def loadcellplot():
     df = pd.read_csv('loadcell.xls',sep='\t')
     df.columns=["epoch","mass"]
-    df['timestamp'] = pd.to_datetime(list(df['epoch']),unit='s')
-    df['date'] = pd.to_datetime(df['epoch'],unit='s',utc=True)
+    df['date'] = pd.to_datetime(df['epoch'],unit='s')
     df.set_index(df['date'],inplace=True)
     df = df.tz_localize(tz=tzl)
     mdates.rcParams['timezone'] = tzl
-    lastone = df.iloc[-1].tolist()
-    lasttime = lastone[2].strftime('%Y%d%M_%H%M%S')
-    firstone = df.iloc[1].tolist()
-    firsttime = firstone[2].strftime('%Y%d%M_%H%M%S')
+    lastone = df.epoch[-1]
+    lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
+    firstone = df.epoch[0]
+    firsttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(firstone))
     imname = 'loadcell%s.png' % (lasttime)
     x = df['date']
     y = df['mass']
-    plt.close('all')
     ms = 2
     nrow = df.shape[0]
     if nrow > 1000:

@@ -2,9 +2,11 @@
 # sampler for a pi hx711/loadcell combination
 # ross lazarus me fecit May 2019
 # based on the hx711py example.py code.
+# added rename of old log file - I just wrote 19 hours over. Sad face.
 
 import time
 import sys
+import os
 
 EMULATE_HX711=False
 logdat = True
@@ -64,7 +66,11 @@ print("Tare done! Ready now...")
 # to use both channels, you'll need to tare them both
 #hx.tare_A()
 #hx.tare_B()
+
 if logdat:
+    if os.path.isfile(logfname):
+        oldlogsave = 'old_%s' % logfname
+        os.rename(logfname,oldlogsave)
     lout = open(logfname,'w')
     started = time.time()
 
