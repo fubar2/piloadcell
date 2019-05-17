@@ -1,6 +1,8 @@
+# module for the flask server - returns an image to display
+
 import pandas as pd
 import matplotlib as mpl
-mpl.use('Agg')
+mpl.use('Agg') # headless!
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import io
@@ -19,7 +21,7 @@ def loadcellplot():
     df.set_index(df['date'],inplace=True)
     df = df.tz_localize(tz=tzl)
     mdates.rcParams['timezone'] = tzl
-    lastone = df.epoch[-1]
+    lastone = df.epoch[-1] # easier to use the original epoch rather than the internal datetimes!
     lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
     firstone = df.epoch[0]
     firsttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(firstone))
