@@ -8,7 +8,7 @@ was tared to zero looks is shown below. Need much longer timespan but it's actua
 for a few dollars. Even after a long initial climb, all values are within 2 gram in 4000. Temperature is an obvious
 external to check. I'll add that shortly because it may enable some of the drift to be modelled out. 
 
-![Example plot](loadcell_first17hours_4kg.png)
+![Example plot](loadcell_19hours_4kg.png)
 
 
 
