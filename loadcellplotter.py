@@ -43,8 +43,9 @@ def loadcellplot():
     lastone = df.epoch[-1] # easier to use the original epoch rather than the internal datetimes!
     lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
     firstone = df.epoch[0]
-    firsttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(firstone))
+    firsttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(firstone))
     imname = 'loadcell%s.png' % (lasttime)
+    lasttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(lastone))
     x = df['date']
     y = df['mass']
     ms = 2

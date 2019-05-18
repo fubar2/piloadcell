@@ -51,10 +51,10 @@ if trimci:
     df,note,descr = trimcl(df,trimci)
 print(descr)
 lastone = df.epoch[-1]
-lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
+lasttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(lastone))
 
 firstone = df.epoch[0]
-firsttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(firstone))
+firsttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(firstone))
 
 x = df['date']
 y = df['mass']
