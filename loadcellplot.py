@@ -66,12 +66,13 @@ elif nrow > 10000:
     ms = 0.5
 elif nrow > 100000:
     ms = 0.2
-plt.figure(figsize=(10,8))
+plt.rcParams["figure.figsize"] = (10,8)
+plt.figure(dpi=150)
 plt.plot(x, y, c='blue',linestyle='None', markersize = ms, marker='o')
 titl = '%d Loadcell values, %s to %s' % (nrow,firsttime,lasttime)
 if trimci:
     plt.title(note,fontsize=14)
-    plt.suptitle(titl,fontsize=18, y=0.975)
+    plt.suptitle(titl,fontsize=17, y=0.985)
 else:
     plt.title(titl)
 plt.xlabel('Time (usually as month-day hour)')
@@ -81,3 +82,4 @@ plt.grid()
 
 plt.savefig(imname, bbox_inches='tight')
 plt.show()
+plt.close()

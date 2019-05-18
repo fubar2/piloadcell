@@ -55,12 +55,12 @@ def loadcellplot():
         ms = 0.5
     if nrow > 100000:
         ms = 0.2
-    plt.figure(figsize=(10,8))
+    plt.figure(figsize=(10,8),dpi=150)
     plt.plot(x, y, c='blue',linestyle='None', markersize = ms, marker='o')
     titl = '%d Loadcell values from %s to %s' % (df.shape[0],firsttime,lasttime)
     if trimci:
         plt.title(note,fontsize=14)
-        plt.suptitle(titl,fontsize=18, y=0.975)
+        plt.suptitle(titl,fontsize=17, y=0.985)
     else:
         plt.title(titl)
     plt.xlabel('Date/Time (month-day hour for example)')
@@ -68,7 +68,7 @@ def loadcellplot():
     plt.grid()
     bytes_image = io.BytesIO()
     plt.savefig(bytes_image, format='png')
-    plt.clf()
+    plt.close()
     bytes_image.seek(0)
     return bytes_image
 
