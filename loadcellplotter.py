@@ -13,11 +13,11 @@ from tzlocal import get_localzone
 import time
 
 tzl = get_localzone().zone
-trimci = 2.0 # set None for no trim
+
 
 def trimcl(df,nsd):
     mene = df.mass.mean()
-    ci = df.mass.std()*2.0
+    ci = df.mass.std()*nsd
     ucl = mene + ci
     lcl = mene - ci
     notbig = df.mass < ucl
@@ -31,7 +31,7 @@ def trimcl(df,nsd):
     return(df2,s,s2)
 
 
-def loadcellplot():
+def loadcellplot(trimci):
     df = pd.read_csv('loadcell.xls',sep='\t')
     df.columns=["epoch","mass"]
     df['date'] = pd.to_datetime(df['epoch'],unit='s')

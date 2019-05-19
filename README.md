@@ -2,23 +2,36 @@
 Python code for plotting weight over time using a raspberry pi zero w, 10kg load cell and hx711 converter
 
 Includes code to generate tab delimited averaged readings sampled every (e.g.) minute so we can evaluate drift and figure out
-how to compensate for temperature. Also includes a flask server to get plots of current accumulated data from the output
-of the sampler process. A 17 hour continuous run on my study floor after adding a fixed 4kg weight as soon as the loadcell
-was tared to zero looks is shown below. Need much longer timespan but it's actually looking far less bad than I had expected
-for a few dollars. Even after a long initial climb, all values are within 2 gram in 4000. Temperature is an obvious
-external to check. I'll add that shortly because it may enable some of the drift to be modelled out. 
+how to compensate for temperature.
+
+Initial test suggested that the plots were horribly scaled by rare outliers - so the plots are now routinely limited
+to +/- 2SD. Long runs can probably be plotted within 3SD. Some kind of autoregressive model us called for
+because the mean clearly does vary in smoothish cycles - and the times don't suggest any obvious large temperature effects.
+The unfiltered plot is served at route /raw by the flask server and usually shows that the outlier straightens out the previously
+wiggly line by making the y axis longer so details are lost and the load cell looks less horrible.
+
+Includes a flask server to plot current accumulated data from the flushed output file from the sampler process,
+served at the server root.
+
+An early continuous run on my study floor with a fixed 3kg weight added as soon as the loadcell
+was tared to zero, is shown below. Need much longer timespan but it's looking far less bad than I had expected
+for a few dollars. Even after a long initial climb, all values are within 2 gram in 4000. If zero is shown, the
+plot is a slightly wiggly straight line. Temperature is a known external to check although it's not obvious knowing our
+day time and night time temperature gradient is not huge - between 14-24 or so most autumn days here in Sydney...
+I'll add that shortly because it may enable some of the drift to be modelled out.
 
 ![Example plot](loadcell_19hours_4kg.png)
 
 
 
 **Background:**
-Load cells suck. The beekeepers have dropped them from the [openhivescale project](https://github.com/openhivescale/mechanic) preferring a 
+In many ways, load cells have annoying habits making them hard to deploy reliably, particularly where regular taring is not possible.
+The beekeepers have dropped them from the [openhivescale project](https://github.com/openhivescale/mechanic) preferring a 
 digitised but much more mechanical system based on an old foundary scale design.
 
 Load cells suffer from drift and temperature changes, but cheap ones can be had for cheap - so little investment for fun.
-Being a data scientist means I want to know how badly they suck...so I grabbed some cheap 10kg load cells and hx711 converter boards from eGay,
-knowing I was in for a rough ride. Turns out they're not that bad...
+As a data scientist, I want to know what the data look like...so I grabbed some cheap 10kg load cells and hx711 converter boards from eGay,
+knowing I was in for a rough ride. Turns out they're probably not useless for my purposes.
 
 **Requirements:**
 Built for python3.5 on raspbian 9 (Debian Stretch). Developed on a pi zero w - best $20 I ever spent.

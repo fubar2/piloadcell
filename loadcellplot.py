@@ -20,7 +20,7 @@ trimci = 2.0
 
 def trimcl(df,nsd):
     mene = df.mass.mean()
-    ci = df.mass.std()*2.0
+    ci = df.mass.std()*nsd
     ucl = mene + ci
     lcl = mene - ci
     notbig = df.mass < ucl
