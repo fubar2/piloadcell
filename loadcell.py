@@ -74,7 +74,7 @@ if logdat:
         # alternatively if you want a new output file for each period, try these 2 lines instead
         #oldlogsave = 'old_%s' % logfname
         #os.rename(logfname,oldlogsave)
-        lout = open(logfilename,'a')
+        lout = open(logfname,'a')
     else:
         lout = open(logfname,'w')
     started = time.time()
