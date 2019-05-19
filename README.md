@@ -2,7 +2,7 @@
 Python code for plotting weight over time using a raspberry pi zero w, 10kg load cell and hx711 converter
 
 Includes code to generate tab delimited averaged readings sampled every (e.g.) minute so we can evaluate drift and figure out
-how to compensate for temperature.
+how to compensate for temperature. It should be used to tare before setting the weight on then left running - loadcell.py
 
 Initial test suggested that the plots were horribly scaled by rare outliers - so the plots are now routinely limited
 to +/- 2SD. Long runs can probably be plotted within 3SD. Some kind of autoregressive model us called for
@@ -11,10 +11,11 @@ The unfiltered plot is served at route /raw by the flask server and usually show
 wiggly line by making the y axis longer so details are lost and the load cell looks less horrible.
 
 Includes a flask server to plot current accumulated data from the flushed output file from the sampler process,
-served at the server root.
+served at the server root. Also a stand alone plotter - loadcellplot.py can save a png of the current loadcell.xls file
+or any suitable file pointed to by the first command line parameter - eg loadcellplot.py foo.xls
 
-An early continuous run on my study floor with a fixed 3kg weight added as soon as the loadcell
-was tared to zero, is shown below. Need much longer timespan but it's looking far less bad than I had expected
+An early continuous run on my study floor with a fixed 3kg weight is shown below.
+Need much longer timespan but it's looking far less bad than I had expected
 for a few dollars. Even after a long initial climb, all values are within 2 gram in 4000. If zero is shown, the
 plot is a slightly wiggly straight line. Temperature is a known external to check although it's not obvious knowing our
 day time and night time temperature gradient is not huge - between 14-24 or so most autumn days here in Sydney...
@@ -22,16 +23,19 @@ I'll add that shortly because it may enable some of the drift to be modelled out
 
 ![Example plot](loadcell_19hours_4kg.png)
 
-
-
 **Background:**
-In many ways, load cells have annoying habits making them hard to deploy reliably, particularly where regular taring is not possible.
+I read up on them before I started this projects and it seems that unless you spend a lot of money, cheap
+load cells have annoying habits making them hard to deploy reliably, particularly where regular taring is not possible
+or where you want a long observation period without taring - which is what I'm looking for.
+
 The beekeepers have dropped them from the [openhivescale project](https://github.com/openhivescale/mechanic) preferring a 
-digitised but much more mechanical system based on an old foundary scale design.
+digitised but much more mechanical system based on an old foundary scale design. Clearly there are serious load cell problems.
+Presumably the bee keeping community is full of smart people and they've been banging away at remote hive weight
+sensing for a while.
 
 Load cells suffer from drift and temperature changes, but cheap ones can be had for cheap - so little investment for fun.
-As a data scientist, I want to know what the data look like...so I grabbed some cheap 10kg load cells and hx711 converter boards from eGay,
-knowing I was in for a rough ride. Turns out they're probably not useless for my purposes.
+As a data scientist, I want to know what the data look like...so I grabbed generic Chinese 10kg load cells and hx711 converter boards from eGay,
+knowing I was probably in for a rough ride. Turns out they're probably not useless for my purposes.
 
 **Requirements:**
 Built for python3.5 on raspbian 9 (Debian Stretch). Developed on a pi zero w - best $20 I ever spent.
@@ -43,7 +47,7 @@ apps. Or not.
 **Lessons so far:**
 
 * Using a cheapo hx711, dropping the hx711 VCC+ from 5v to 3.3v resulted in huge gains in stability. Go figure. Both are within
-the datasheet specs but maybe the higher voltage burns more power on the board and heats everything up?
+the datasheet specs but maybe at a higher voltage some extra power is burned by regulation on the board so everything heats up?
 
 * Using the hx711py read_average function with 10 samples seems to give reasonable estimates - trims the top and bottom values.
 

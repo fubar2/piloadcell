@@ -3,6 +3,7 @@
 # ross lazarus me fecit May 2019
 # based on the hx711py example.py code.
 # added rename of old log file - I just wrote 19 hours over. Sad face.
+# changed to just append. deal with zeros and discontinuities later
 
 import time
 import sys
@@ -69,9 +70,13 @@ print("Tare done! Ready now...")
 
 if logdat:
     if os.path.isfile(logfname):
-        oldlogsave = 'old_%s' % logfname
-        os.rename(logfname,oldlogsave)
-    lout = open(logfname,'w')
+        # append - taring will be dealt with by filtering probably...
+        # alternatively if you want a new output file for each period, try these 2 lines instead
+        #oldlogsave = 'old_%s' % logfname
+        #os.rename(logfname,oldlogsave)
+        lout = open(logfilename,'a')
+    else:
+        lout = open(logfname,'w')
     started = time.time()
 
 while True:
@@ -85,8 +90,8 @@ while True:
         # print binary_string + " " + np_arr8_string
         
         # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
-        # val = hx.read_average(times=10) 
-        val = hx.get_weight(times=10)
+        val = hx.read_average(times=10) 
+        #val = hx.get_weight(times=10)
         dur = int(time.time()) # seconds is enough for us
         s = '%d\t%.2f' % (dur,val)
         print(s) 
