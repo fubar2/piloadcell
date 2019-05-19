@@ -19,18 +19,22 @@ mdates.rcParams['timezone'] = tzl
 trimci = 2.0
 
 def trimcl(df,nsd):
-    mene = df.mass.mean()
-    ci = df.mass.std()*nsd
-    ucl = mene + ci
-    lcl = mene - ci
-    notbig = df.mass < ucl
-    df2 = df[notbig]
-    notsmall = df2.mass > lcl
-    df2 = df2[notsmall]
-    nhi = sum(notbig==False)
-    nlo = sum(notsmall==False)
-    s = 'Trim +/- %.1f SD removed %d above %.2f and %d below %.2f\n' % (nsd,nhi,ucl,nlo,lcl)
-    s2 = '##Before trim:\n %s\nAfter trim:\n %s' % (df.describe(),df2.describe())
+    if nsd:
+        mene = df.mass.mean()
+        ci = df.mass.std()*nsd
+        ucl = mene + ci
+        lcl = mene - ci
+        notbig = df.mass < ucl
+        df2 = df[notbig]
+        notsmall = df2.mass > lcl
+        df2 = df2[notsmall]
+        nhi = sum(notbig==False)
+        nlo = sum(notsmall==False)
+        s = 'Trim +/- %.1f SD removed %d above %.2f and %d below %.2f\n' % (nsd,nhi,ucl,nlo,lcl)
+        s2 = '##Before trim:\n %s\nAfter trim:\n %s' % (df.describe(),df2.describe())
+    else:
+        s = 'Raw untrimmed data'
+        s2 = '##Raw:\n%s' % df.describe()
     return(df2,s,s2)
     
 if (len(sys.argv) > 1):
@@ -47,8 +51,7 @@ df.columns=["epoch","mass"]
 df['date'] = pd.to_datetime(df['epoch'],unit='s')
 df.set_index(df['date'],inplace=True)
 df = df.tz_localize(tz=tzl)
-if trimci:
-    df,note,descr = trimcl(df,trimci)
+df,note,descr = trimcl(df,trimci)
 print(descr)
 lastone = df.epoch[-1]
 lasttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(lastone))
