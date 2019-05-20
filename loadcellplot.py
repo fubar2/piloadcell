@@ -35,6 +35,7 @@ def trimcl(df,nsd):
     else:
         s = 'Raw untrimmed data'
         s2 = '##Raw:\n%s' % df.describe()
+        df2 = df
     return(df2,s,s2)
     
 if (len(sys.argv) > 1):
