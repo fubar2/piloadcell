@@ -2,10 +2,19 @@
 Python code for plotting weight over time using a raspberry pi zero w, 10kg load cell and hx711 converter
 
 Includes code to generate tab delimited averaged readings sampled every (e.g.) minute so we can evaluate drift and figure out
-how to compensate for temperature. It should be used to tare before setting the weight on then left running - loadcell.py
+how to compensate for temperature. It should be used to tare before setting the weight on then left running - eg
+python3 loadcell.py &
+so it just runs.
 
-Initial test suggested that the plots were horribly scaled by rare outliers - so the plots are now routinely limited
-to +/- 2SD. Long runs can probably be plotted within 3SD. Some kind of autoregressive model us called for
+On a freshly updated raspbian 9,
+
+sudo apt install python3-pandas python3-matplotlib python3-tzlocal
+
+should do the needful.
+
+Initial test suggested that the plots took a few minutes to settle after the weight was placed
+and were horribly scaled by rare outliers - so the plots are now routinely ignored until >3 minutes from tare and
+then trimmed at +/- 2SD. Long runs can probably be plotted within 3SD. Some kind of autoregressive model us called for
 because the mean clearly does vary in smoothish cycles - and the times don't suggest any obvious large temperature effects.
 The unfiltered plot is served at route /raw by the flask server and usually shows that the outlier straightens out the previously
 wiggly line by making the y axis longer so details are lost and the load cell looks less horrible.

@@ -22,12 +22,14 @@ from tzlocal import get_localzone
 tzl = get_localzone().zone
 mdates.rcParams['timezone'] = tzl
 NSD = 2.0
-
-
+IGSEC = None
+# arbitrary hack - throw away data until load cell settles down a bit
+# need more data to see if makes a useful difference
 
 class loadCellPlotter():
 
     def __init__(self,nsd,infi):
+        self.started = time.time()
         self.tzl = tzl
         self.nsd = nsd
         self.have_cache = False
@@ -54,6 +56,25 @@ class loadCellPlotter():
         self.trimcl()
  
     def trimcl(self):
+        """ trim +/-nsd SD and ignore first IGSEC data as load cell settles a bit
+        """
+        if IGSEC:
+            begn = self.df.iloc[0,0] + IGSEC
+            oldc = self.nrow
+            print('begn=',begn)
+            i = 0
+            while (i < self.nrow) and (self.df.epoch[i] < begn):
+                i += 1
+            if i < self.nrow:
+                self.df = self.df.iloc[i:,:]
+                self.nrow = self.df.shape[0]
+            print('### Started with %d. After igsec, have %d rows' % (oldc,self.nrow))
+        firstone = self.df.iloc[0,0]
+        firsttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(firstone))
+        lastone = self.df.iloc[-1,0] # easier to use the original epoch rather than the internal datetimes!
+        lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
+        self.firsttime = firsttime
+        self.lasttime = lasttime  
         if self.nsd:
             mene = self.df.mass.mean()
             ci = self.df.mass.std()*self.nsd
@@ -78,17 +99,12 @@ class loadCellPlotter():
     def loadcellplotFlask(self):
         bytes_image = io.BytesIO()
         mdates.rcParams['timezone'] = self.tzl
-        lastone = self.df.epoch[-1] # easier to use the original epoch rather than the internal datetimes!
-        lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
-        firstone = self.df.epoch[0]
-        firsttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(firstone))
-        imname = 'loadcell%s.png' % (lasttime)
-        lasttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(lastone))
+        imname = 'loadcell%s.png' % (self.lasttime)
         x = self.df['date']
         y = self.df['mass']
         plt.figure(figsize=(10,8),dpi=150)
         plt.plot(x, y, c='blue',linestyle='None', markersize = self.ms, marker='o')
-        titl = '%d Loadcell values from %s to %s' % (self.nrow,firsttime,lasttime)
+        titl = '%d Loadcell values from %s to %s' % (self.nrow,self.firsttime,self.lasttime)
         plt.title(self.subt,fontsize=14)
         plt.suptitle(titl,fontsize=17, y=0.985)
         plt.xlabel('Date/Time (month-day hour for example)')
@@ -101,17 +117,12 @@ class loadCellPlotter():
 
     def loadcellplot(self,imname):
         mdates.rcParams['timezone'] = tzl
-        lastone = self.df.epoch[-1] # easier to use the original epoch rather than the internal datetimes!
-        lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
-        firstone = self.df.epoch[0]
-        firsttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(firstone))
-        imname = 'loadcell%s.png' % (lasttime)
-        lasttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(lastone))
+        imname = 'loadcell%s.png' % (self.lasttime)
         x = self.df['date']
         y = self.df['mass']
         plt.figure(figsize=(10,8),dpi=150)
         plt.plot(x, y, c='blue',linestyle='None', markersize = self.ms, marker='o')
-        titl = '%d Loadcell values from %s to %s' % (self.nrow,firsttime,lasttime)
+        titl = '%d Loadcell values from %s to %s' % (self.nrow,self.firsttime,self.lasttime)
         plt.title(self.subt,fontsize=14)
         plt.suptitle(titl,fontsize=17, y=0.985)
         plt.xlabel('Date/Time (month-day hour for example)')
