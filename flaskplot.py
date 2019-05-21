@@ -1,14 +1,18 @@
 #! /usr/bin/python3
 # simple web server for data accumulated to date by loadcell.py writing
 # to loadcell.xls
+# Check Configuring Flask-Cache section for more details
 
 from flask import Flask, send_file, make_response
+from flask_cache import Cache
 import loadcellplot
 app = Flask(__name__)
 NSD = 2.0
 
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @app.route('/', methods=['GET'])
+@cache.cached(timeout=100)
 def lcscatter():
     lc = loadcellplot.loadCellPlotter(nsd=NSD,infi='loadcell.xls')
     bytes_obj = lc.loadcellplotFlask()
@@ -18,6 +22,7 @@ def lcscatter():
                      mimetype='image/png')
                      
 @app.route('/raw', methods=['GET'])
+@cache.cached(timeout=100)
 def lcraw():
     lc = loadcellplot.loadCellPlotter(nsd=None,infi='loadcell.xls')
     bytes_obj = lc.loadcellplotFlask()
