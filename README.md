@@ -14,14 +14,14 @@ Includes a flask server to plot current accumulated data from the flushed output
 served at the server root. Also a stand alone plotter - loadcellplot.py can save a png of the current loadcell.xls file
 or any suitable file pointed to by the first command line parameter - eg loadcellplot.py foo.xls
 
-An early continuous run on my study floor with a fixed 3kg weight is shown below.
+A continuous run on my basement floor with a fixed 3kg weight is shown below.
 Need much longer timespan but it's looking far less bad than I had expected
-for a few dollars. Even after a long initial climb, all values are within 2 gram in 4000. If zero is shown, the
+for a few dollars. If zero is shown, the
 plot is a slightly wiggly straight line. Temperature is a known external to check although it's not obvious knowing our
 day time and night time temperature gradient is not huge - between 14-24 or so most autumn days here in Sydney...
 I'll add that shortly because it may enable some of the drift to be modelled out.
 
-![Example plot](loadcell_19hours_4kg.png)
+![Example plot](loadcellplot_sample.png)
 
 **Background:**
 I read up on them before I started this projects and it seems that unless you spend a lot of money, cheap
