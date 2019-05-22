@@ -3,11 +3,13 @@ Python code for plotting weight over time using a raspberry pi zero w, 10kg load
 
 **Preliminaries**
 
-On a freshly updated raspbian 9,
-sudo apt install python3-pandas python3-matplotlib python3-tzlocal
+Requires RPi.GPIO - I think that's included and hx711py installed from
+https://github.com/tatobari/hx711py - instructions are there.
+Also needs some extra python3 modules. On a freshly updated raspbian 9,
+*sudo apt install python3-pandas python3-matplotlib python3-tzlocal*
 should do the needful.
 
-Includes code to generate tab delimited averaged readings sampled every (e.g.) minute so we can evaluate drift and figure out
+loadcell.py has code to generate tab delimited averaged readings sampled every (e.g.) 30 seconds so we can evaluate drift and figure out
 how to compensate for temperature. Wait until tare is completed before setting the weight on then leave it running - eg
 python3 loadcell.py &
 
