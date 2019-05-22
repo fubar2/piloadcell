@@ -72,7 +72,8 @@ class loadCellPlotter():
         firstone = self.df.iloc[0,0]
         firsttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(firstone))
         lastone = self.df.iloc[-1,0] # easier to use the original epoch rather than the internal datetimes!
-        lasttime = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
+        lasttime = time.strftime('%H:%M:%S %d/%m/%Y',time.localtime(lastone))
+        self.fstamp = time.strftime('%Y%m%d_%H%M%S',time.localtime(lastone))
         self.firsttime = firsttime
         self.lasttime = lasttime  
         if self.nsd:
@@ -117,7 +118,6 @@ class loadCellPlotter():
 
     def loadcellplot(self,imname):
         mdates.rcParams['timezone'] = tzl
-        imname = 'loadcell%s.png' % (self.lasttime)
         x = self.df['date']
         y = self.df['mass']
         plt.figure(figsize=(10,8),dpi=150)
@@ -139,7 +139,7 @@ if __name__ == "__main__":
         imf = '%s.png' % ifilename 
     else:
         iname = 'loadcell.xls' # 'loadcell_first17hours_4kg.xls'
-        imf = 'loadcell_%s.png' % (time.strftime('%Y%m%d%H%M%S',time.localtime()))
+        imf = 'loadcell_%s.png' % (time.strftime('%Y%m%d_%H%M%S',time.localtime()))
 
     lc = loadCellPlotter(nsd=NSD,infi=iname)
     lc.loadcellplot(imf)
