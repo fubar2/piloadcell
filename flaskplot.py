@@ -12,7 +12,7 @@ NSD = 2.0
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @app.route('/', methods=['GET'])
-@cache.cached(timeout=100)
+@cache.cached(timeout=600)
 def lcscatter():
     lc = loadcellplot.loadCellPlotter(nsd=NSD,infi='loadcell.xls')
     bytes_obj = lc.loadcellplotFlask()
@@ -22,7 +22,7 @@ def lcscatter():
                      mimetype='image/png')
                      
 @app.route('/raw', methods=['GET'])
-@cache.cached(timeout=100)
+@cache.cached(timeout=600)
 def lcraw():
     lc = loadcellplot.loadCellPlotter(nsd=None,infi='loadcell.xls')
     bytes_obj = lc.loadcellplotFlask()

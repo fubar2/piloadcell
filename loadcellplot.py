@@ -8,6 +8,8 @@ import numpy as np
 
 import matplotlib as mpl
 mpl.use('Agg') # headless!
+from matplotlib import rcParams
+rcParams.update({'figure.autolayout': True})
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
@@ -99,17 +101,18 @@ class loadCellPlotter():
 
     def loadcellplotFlask(self):
         bytes_image = io.BytesIO()
-        mdates.rcParams['timezone'] = self.tzl
         imname = 'loadcell%s.png' % (self.lasttime)
         x = self.df['date']
         y = self.df['mass']
-        plt.figure(figsize=(10,8),dpi=150)
+        plt.figure(figsize=(10,8),dpi=100)
+        
         plt.plot(x, y, c='blue',linestyle='None', markersize = self.ms, marker='o')
         titl = '%d Loadcell values from %s to %s' % (self.nrow,self.firsttime,self.lasttime)
         plt.title(self.subt,fontsize=14)
-        plt.suptitle(titl,fontsize=17, y=0.985)
-        plt.xlabel('Date/Time (month-day hour for example)')
-        plt.ylabel('Reported Mass (g)')
+        plt.suptitle(titl,fontsize=17, y=0.955)
+        plt.xlabel('Date/Time (month-day hour for example)',fontsize=10)
+        plt.ylabel('Reported Mass (g)',fontsize=16)
+        plt.xticks(rotation=90)
         plt.grid()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
@@ -117,16 +120,17 @@ class loadCellPlotter():
         return bytes_image
 
     def loadcellplot(self,imname):
-        mdates.rcParams['timezone'] = tzl
         x = self.df['date']
         y = self.df['mass']
-        plt.figure(figsize=(10,8),dpi=150)
+        plt.figure(figsize=(10,8),dpi=100)
         plt.plot(x, y, c='blue',linestyle='None', markersize = self.ms, marker='o')
         titl = '%d Loadcell values from %s to %s' % (self.nrow,self.firsttime,self.lasttime)
         plt.title(self.subt,fontsize=14)
-        plt.suptitle(titl,fontsize=17, y=0.985)
-        plt.xlabel('Date/Time (month-day hour for example)')
-        plt.ylabel('Reported Mass (g)')
+        plt.suptitle(titl,fontsize=17, y=0.955)
+        plt.xlabel('Date/Time (month-day hour for example)',fontsize=14)
+        plt.ylabel('Reported Mass (g)',fontsize=16)
+        plt.xticks(rotation=90)
+        #plt.tight_layout()
         plt.grid()
         plt.savefig(imname, bbox_inches='tight')
         plt.show()
