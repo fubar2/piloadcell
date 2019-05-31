@@ -3,7 +3,7 @@ Python code for plotting weight over time using a raspberry pi zero w, 10kg load
 
 **Preliminaries**
 
-Requires RPi.GPIO - I think that's included and hx711py installed from
+Requires RPi.GPIO - I think that's included with Raspbian and hx711py installed from
 https://github.com/tatobari/hx711py - instructions are there.
 Also needs some extra python3 modules. On a freshly updated raspbian 9,
 *sudo apt install python3-pandas python3-matplotlib python3-tzlocal*
